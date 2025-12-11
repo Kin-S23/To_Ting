@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blessings For You</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 配置Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF69B4',
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .puzzle-piece {
+                cursor: grab;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            }
+            .puzzle-piece:active {
+                cursor: grabbing;
+            }
+            .drop-zone {
+                border: 2px dashed #9ca3af; /* 灰色虚线边框 */
+                transition: all 0.3s ease;
+                /* 移除内边距和背景，只保留虚线边框 */
+                background: transparent;
+            }
+            .drop-zone.filled {
+                border: none; /* 填充后隐藏边框 */
+            }
+            .completed-flash {
+                animation: flash 1s ease-in-out 3;
+            }
+            @keyframes flash {
+                0%, 100% { opacity: 1; transform: scale(1); }
+                50% { opacity: 0.7; transform: scale(1.02); }
+            }
+            .arrow-appear {
+                animation: slideUp 0.5s ease-out forwards;
+            }
+            @keyframes slideUp {
+                from { transform: translateY(20px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4 overflow-hidden">
+    <div class="w-full max-w-6xl mx-auto flex flex-col items-center">
+        <!-- 拼图区域 - 移除所有内边距和间隔 -->
+        <div id="puzzle-container" class="w-full max-w-md mx-auto aspect-square">
+            <div id="puzzle-board" class="w-full h-full grid grid-cols-4 grid-rows-4 gap-0 transition-all duration-500">
+                <!-- 拼图格子将通过JS生成 -->
+            </div>
+        </div>
+        
+        <!-- 拼图碎片区域 - 分布在拼图两侧 -->
+        <div id="pieces-container" class="w-full flex justify-between items-center mt-6 px-2">
+            <div id="pieces-left" class="flex flex-wrap gap-3 justify-center">
+                <!-- 左侧拼图碎片 -->
+            </div>
+            <div id="pieces-right" class="flex flex-wrap gap-3 justify-center">
+                <!-- 右侧拼图碎片 -->
+            </div>
+
+        </div>
+        <div id="blessing-text" class="hidden text-center mt-6">
+    <span class="text-2xl font-bold text-pink-500 opacity-0 transition-opacity duration-1000；">Blessings for you</span>
+</div>
+        
+        <!-- 完成后显示的箭头 -->
+        <div id="arrow-container" class="hidden flex justify-center mt-8">
+            <a href="/To_Ting/index0.html" class="arrow-appear">
+                <img src="/To_Ting/arrowhead.png" alt="前往下一页" class="w-16 h-auto cursor-pointer hover:scale-110 transition-transform">
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 拼图尺寸和数量配置
+            const PUZZLE_SIZE = 4; // 4x4 拼图
+            const PIECES_COUNT = PUZZLE_SIZE * PUZZLE_SIZE;
+            const SNAP_DISTANCE = 30; // 自动吸附的距离(px)
+            
+            // 获取DOM元素
+            const puzzleBoard = document.getElementById('puzzle-board');
+            const piecesLeft = document.getElementById('pieces-left');
+            const piecesRight = document.getElementById('pieces-right');
+            const arrowContainer = document.getElementById('arrow-container');
+            const puzzleContainer = document.getElementById('puzzle-container');
+            
+            const blessingText = document.getElementById('blessing-text');
+    const blessingSpan = blessingText ? blessingText.querySelector('span') : null; // 增加容错
+    
+            // 已放置的拼图计数
+            let placedPieces = 0;
+            
+            // 计算拼图碎片大小（基于拼图板尺寸，无间隔）
+            let puzzleBoardSize = puzzleBoard.offsetWidth;
+            const pieceSize = Math.floor(puzzleBoardSize / PUZZLE_SIZE); // 无间隔，精确分配
+            
+            // 创建拼图格子（无间隔）
+            for (let i = 0; i < PIECES_COUNT; i++) {
+                const col = i % PUZZLE_SIZE;
+                const row = Math.floor(i / PUZZLE_SIZE);
+                
+                const dropZone = document.createElement('div');
+                dropZone.classList.add('drop-zone', 'relative', 'overflow-hidden');
+                dropZone.dataset.index = i;
+                dropZone.dataset.col = col;
+                dropZone.dataset.row = row;
+                // 确保格子大小正确，无额外间距
+                dropZone.style.width = `${pieceSize}px`;
+                dropZone.style.height = `${pieceSize}px`;
+                
+                puzzleBoard.appendChild(dropZone);
+            }
+            
+            // 生成随机顺序的拼图索引
+            const shuffledIndices = Array.from({length: PIECES_COUNT}, (_, i) => i)
+                .sort(() => Math.random() - 0.5);
+            
+            // 分割拼图到左右两侧（平均分配）
+            const midPoint = Math.ceil(shuffledIndices.length / 2);
+            const leftPieces = shuffledIndices.slice(0, midPoint);
+            const rightPieces = shuffledIndices.slice(midPoint);
+            
+            // 创建拼图碎片并分配到两侧
+            function createPiece(index, container) {
+                const col = index % PUZZLE_SIZE;
+                const row = Math.floor(index / PUZZLE_SIZE);
+                
+                const piece = document.createElement('div');
+                // 固定拼图碎片大小，与格子完全匹配
+                piece.style.width = `${pieceSize}px`;
+                piece.style.height = `${pieceSize}px`;
+                piece.classList.add('puzzle-piece', 'bg-gray-200');
+                piece.dataset.index = index;
+                piece.dataset.col = col;
+                piece.dataset.row = row;
+                
+                // 正确设置背景图位置和大小，确保无缝拼接
+                piece.style.backgroundImage = `url('/To_Ting/pink_bear.png')`;
+                piece.style.backgroundSize = `${puzzleBoardSize}px ${puzzleBoardSize}px`; // 与拼图板大小一致
+                piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
+                piece.style.backgroundRepeat = 'no-repeat';
+                
+                // 设置拖拽属性
+                piece.draggable = true;
+                
+                // 添加拖拽事件监听
+                piece.addEventListener('dragstart', handleDragStart);
+                
+                container.appendChild(piece);
+            }
+            
+            // 确保拼图板尺寸已计算完成后再创建碎片
+            setTimeout(() => {
+                // 重新计算确保尺寸准确
+                puzzleBoardSize = puzzleBoard.offsetWidth;
+                createPieceIndices(leftPieces, piecesLeft);
+                createPieceIndices(rightPieces, piecesRight);
+            }, 100);
+            
+            // 批量创建拼图碎片
+            function createPieceIndices(indices, container) {
+                indices.forEach(index => {
+                    const col = index % PUZZLE_SIZE;
+                    const row = Math.floor(index / PUZZLE_SIZE);
+                    
+                    const piece = document.createElement('div');
+                    piece.style.width = `${pieceSize}px`;
+                    piece.style.height = `${pieceSize}px`;
+                    piece.classList.add('puzzle-piece', 'bg-gray-200');
+                    piece.dataset.index = index;
+                    piece.dataset.col = col;
+                    piece.dataset.row = row;
+                    
+                    piece.style.backgroundImage = `url('/To_Ting/pink_bear.png')`;
+                    piece.style.backgroundSize = `${puzzleBoardSize}px ${puzzleBoardSize}px`;
+                    piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
+                    piece.style.backgroundRepeat = 'no-repeat';
+                    
+                    piece.draggable = true;
+                    piece.addEventListener('dragstart', handleDragStart);
+                    
+                    container.appendChild(piece);
+                });
+            }
+            
+            // 为拼图格子添加拖放事件监听
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('dragleave', handleDragLeave);
+                zone.addEventListener('drop', handleDrop);
+            });
+            
+            // 拖拽开始处理函数
+            function handleDragStart(e) {
+                e.dataTransfer.setData('text/plain', this.dataset.index);
+                setTimeout(() => this.classList.add('opacity-60', 'scale-95'), 0);
+            }
+            
+            // 拖拽经过处理函数
+            function handleDragOver(e) {
+                e.preventDefault();
+                // 移除拖拽经过时的背景色变化
+            }
+            
+            // 拖拽离开处理函数
+            function handleDragLeave() {
+                // 移除拖拽离开时的背景色变化
+            }
+            
+            // 放置处理函数
+            function handleDrop(e) {
+                e.preventDefault();
+                
+                // 如果格子已有拼图，不处理
+                if (this.hasChildNodes()) return;
+                
+                const pieceIndex = e.dataTransfer.getData('text/plain');
+                const piece = document.querySelector(`.puzzle-piece[data-index="${pieceIndex}"]`);
+                
+                // 如果找不到拼图，不处理
+                if (!piece) return;
+                
+                // 计算拼图应该放置的位置
+                const targetIndex = parseInt(this.dataset.index);
+                const pieceIndexNum = parseInt(pieceIndex);
+                
+                // 获取拼图和目标位置的坐标
+                const pieceRect = piece.getBoundingClientRect();
+                const zoneRect = this.getBoundingClientRect();
+                
+                // 计算中心点距离
+                const pieceCenterX = pieceRect.left + pieceRect.width / 2;
+                const pieceCenterY = pieceRect.top + pieceRect.height / 2;
+                const zoneCenterX = zoneRect.left + zoneRect.width / 2;
+                const zoneCenterY = zoneRect.top + zoneRect.height / 2;
+                
+                const distance = Math.sqrt(
+                    Math.pow(pieceCenterX - zoneCenterX, 2) + 
+                    Math.pow(pieceCenterY - zoneCenterY, 2)
+                );
+                
+                // 如果是正确的位置或距离足够近，放置拼图
+                if (pieceIndexNum === targetIndex || distance < SNAP_DISTANCE) {
+                    // 克隆拼图并放置到目标位置
+                    const clonedPiece = piece.cloneNode(true);
+                    clonedPiece.classList.remove('opacity-60', 'scale-95');
+                    clonedPiece.draggable = false;
+                    clonedPiece.style.width = '100%';
+                    clonedPiece.style.height = '100%';
+                    // 重新设置背景以适应格子大小
+                    clonedPiece.style.backgroundSize = `${PUZZLE_SIZE * 100}% ${PUZZLE_SIZE * 100}%`;
+                    clonedPiece.style.backgroundPosition = `${(parseInt(clonedPiece.dataset.col) / 3) * 100}% ${(parseInt(clonedPiece.dataset.row) / 3) * 100}%`;
+                    clonedPiece.classList.add('absolute', 'inset-0');
+                    
+                    // 移除原拼图
+                    piece.remove();
+                    
+                    // 添加到目标格子
+                    this.appendChild(clonedPiece);
+                    this.classList.add('filled');
+                    
+                    // 增加已放置计数
+                    placedPieces++;
+                    
+                    // 检查是否完成所有拼图
+                    if (placedPieces === PIECES_COUNT) {
+                        completePuzzle();
+                    }
+                }
+            }
+            
+            // 完成拼图处理函数
+            function completePuzzle() {
+                // 移除所有格子的边框和样式
+                document.querySelectorAll('.drop-zone').forEach(zone => {
+                    zone.classList.remove('drop-zone', 'filled');
+                    zone.style.border = 'none';
+                });
+                
+                // 创建完整图片（与拼图板大小一致）
+                const completeImage = document.createElement('div');
+                completeImage.classList.add('w-full', 'h-full', 'completed-flash', 'relative');
+                completeImage.style.width = `${puzzleBoard.offsetWidth}px`; // 与拼图板宽度完全一致
+                completeImage.style.height = `${puzzleBoard.offsetHeight}px`;
+                completeImage.style.backgroundImage = `url('/To_Ting/pink_bear.png')`;
+                completeImage.style.backgroundSize = '100% 100%';
+                completeImage.style.backgroundRepeat = 'no-repeat';
+                completeImage.style.backgroundPosition = 'center';
+                
+                // 替换拼图板内容，确保图片大小正确
+                puzzleBoard.innerHTML = '';
+                puzzleBoard.appendChild(completeImage);
+                
+                // 隐藏拼图碎片区域
+                document.getElementById('pieces-container').classList.add('hidden');
+                
+                // 显示箭头
+                setTimeout(() => {
+                    arrowContainer.classList.remove('hidden');
+                    // 修正：增加判断，避免元素不存在导致报错
+        if (blessingText && blessingSpan) {
+            blessingText.classList.remove('hidden');
+            setTimeout(() => {
+                blessingSpan.style.opacity = '1';
+            }, 100);
+        }
+                }, 3000); // 等待闪烁动画完成
+            }
+            
+            // 窗口大小变化时重新计算尺寸
+            window.addEventListener('resize', () => {
+                location.reload(); // 刷新页面重新计算
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blessings For You</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden; /* 禁止横向滚动，避免内容超界 */
+            padding: 30px 0;
+        }
+
+        /* 背景：高度100%屏幕，保持原比例，水平居中 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            margin: 0 auto; /* 水平居中 */
+            background-image: url("/To_Ting/backgroundpicture.png");
+            background-repeat: no-repeat;
+            background-size: auto 100%; /* 高度填满屏幕，宽度按图片原比例自动计算 */
+            background-position: center;
+            z-index: -1;
+            left: 0;
+            right: 0;
+        }
+
+        /* 内容容器：宽度=背景宽度，所有内容都在这里 */
+        .content-wrapper {
+            position: relative;
+            margin: 0 auto; /* 与背景对齐居中 */
+            padding: 5px; /* 左右内边距，避免文字贴背景边缘 */
+            max-width: 100%; /* 禁止超宽 */
+        }
+
+        /* 文本样式：宽度完全继承内容容器（不超背景） */
+        .text1 {
+            margin-top: 20em;
+            text-indent: 2em;
+            margin-bottom: 20px;
+            line-height: 2.05;
+            color: rgb(40, 70, 70);
+            font-family: KaiTi;
+            font-size: 20px; /* 适当调整字体大小，避免拥挤 */
+        }
+
+        /* 音乐控制区：固定在内容容器右上角，不超背景 */
+        .music-container {
+            position: fixed;
+            position: absolute;  /* 仅容器固定定位 */
+            top: 0;
+            right: 1px; /* 与内容容器内边距一致 */
+            text-align: center; /* 容器内元素水平居中 */
+            z-index: 9999;
+            margin-right: 100px;
+            }
+
+            .music-control {
+            cursor: pointer;
+            position: fixed;
+            width: 60px;
+            height: 40px;
+            display: block;
+            margin: 0 auto; 
+            margin-right: 1px; /* 图标自身水平居中 */
+            /* 移除 position: fixed，避免脱离文档流 */
+            }
+
+            .music-text {
+            font-size: 15px;
+            position: fixed;
+            color: rgb(207, 122, 198);
+            cursor: pointer;
+            font-family: fangsong;
+            white-space: nowrap;
+            margin-top: 40px; /* 调整图标与文字的垂直距离（覆盖重复的margin-top） */
+            margin-right: 15px; /* 防止文字换行超界 */
+            }
+
+        
+            
+        
+    </style>
+</head>
+<body>
+    <!-- 内容容器：所有元素包裹在这里，宽度=背景宽度 -->
+    <div class="content-wrapper">
+        <!-- 播放提示 -->
+        
+
+        <!-- 文本内容（严格在背景内） -->
+        <div class="text1">
+            <p>好久不见，慧婷，二十岁生日快乐呀！</p >
+                <br>
+
+            <p>谢谢你给我做的小视频，我很喜欢！想必你也等了很久我的回应。接下来我想说明白我对你的感觉和我的感受，可能不全准确，望你理解。</p >
+                <br>
+
+            <p>其实最后对话的那天晚上，我想和你说件事，那时候你在忙没想理我，我就有点失落，但我以为等你忙完了，之后你能来找我一下，可是到现在都没有，你可能不在意，或者是没看出来吧。不过我知道，我找你的话你会回应我的。</p >
+                <br>
+
+            <p>其实这些所谓的矛盾，总的原因就是我，我太在意你了，太喜欢你了，我对你的喜爱已经超过友情，我就是放不下你，我想占有你，所以就会吃醋啊，觉得你敷衍呀，不想你和别人走得太近....我从来没有那么喜欢过一个人，我认为你的一切都好可爱，呆呆憨憨的，有时候很冷酷，还有你笑的时候的酒窝！....什么都好吸引我，而且你知道，我对高个子特别欣赏，我已经不只是把你当朋友了，你懂的。所以我也想你同样地在意我。我占有欲太过了。</p >
+                <br>
+
+            <p>你不必说自己有错，我没有硬发什么消息，没有对你有意见，也没有认为你只考虑自己，其实你非常非常好，内心非常善良，你不会在意无伤大雅的事，做事很有条理，很聪明，对任何人都很有爱心，你已经做到作为朋友应该做的事了。</p >
+                <br>
+
+            <p>我很开心遇见了你，和你在一起的每分每秒我都很放松很舒服。在断联的这两个月里我每天都很想你，有时候看我们的聊天记录，回忆那些喜怒哀乐，那时候好幸福。看你照片的时候更想你.....要是你能一直在我身边就好了。</p >
+                <br>
+
+            <p>每天我都一个人吃饭上课，说不到两句话，手机上也更是空落落（不知道为什么你认为我还有人聊天，我高初中同学早就没联系了，我也没有熟的邻里亲戚。我的舍友和同学不像你的那么熟，我们不是一间教室上课不是一个专业，都是路上碰到问一声好的程度而已，况且我也不想认识新朋友）不过孤单孤单着也快习惯了。不联系的这段时间，的确，没有了你的消息，没有了我臆想出来的，因为占有欲而产生的想法，也就没有了你说的矛盾。我看着火苗就这样慢慢灭掉的时候，挺抓狂的，但或许是对我的解脱，不用再焦虑 你为什么不能主动续它 了。</p >
+                <br>
+
+            <p>不知道没有联系的这段时间，你有没有想我？但感觉有没有我你都无所谓，反正你不缺人一起玩，前段时间新出的电影你应该和朋友一起看了吧（╥﹏╥又在想象）。你的告别是我没想到的，我以为我们还能再聊一聊。不过，其实断联对你来说是如释重负吧，不用再敷衍地回应我那些无厘头的分享，不用再听我的评价和意见，不用再遭受我的抱怨了，而且我不会幽默，我没什么梗，我们关注的事物不一样，不能让你开心，每每你和我玩的时候，好像你都不能尽兴，所以我也很懊恼。</p >
+                <br>
+
+            <p>总的来说，我不能怪你不喜欢我，因为我只是你朋友当中，玩得比较多，待一起较久的一个罢了，我凭什么要求你偏心我，凭什么要求你对待我要不一样。你的圈子很大，你还要顾及很多人。我对以前我的态度感到抱歉，我确实太自私了。</p >
+                <br>
+
+            <p>你大概还有不同的观点，可以再回复我，也可以就这样了，因为我怕是不能放下你只做朋友，不能不想你，而一再联系，我又会吃醋什么的....所以断联对你我都好，只是我觉得可惜，我断掉的不仅是一个好朋友，是一个爱人，更是一个知己。</p >
+                <br>
+
+            <p>最后，给你买了个小礼物，请你收下，就当做我对过往的歉意啦。祝慧婷20岁生日快乐！愿你在新的一岁，身体健康安泰，学习与工作皆能得偿所愿，稳步前行，诸事顺意！</p >
+                <br>
+                <br>
+                <br>
+        </div>
+
+        <!-- 音乐控制区（在内容容器内，不超背景） -->
+        <div class="music-container" id="musicControlWrap">
+            <img src="/To_Ting/20single.png" class="music-control" id="musicIcon" alt="音乐控制">
+            <div class="music-text" id="musicText">Happy 20th Birthday</div>
+        </div>
+    </div>
+
+    <!-- 音频元素 -->
+    <audio id="bgMusic" src="/To_Ting/TheRain.mp3" loop preload></audio>
+
+    <script>
+        // 核心：动态获取背景真实宽度，让内容容器匹配
+        function setContentWidth() {
+            // 创建一个隐藏的img元素，用于获取背景图片的原始比例
+            const bgImg = new Image();
+            bgImg.src = "/To_Ting/backgroundpicture.png"; // 与背景图片路径一致
+
+            bgImg.onload = function() {
+                // 图片原始比例：宽/高
+                const imgRatio = bgImg.width / bgImg.height;
+                // 背景容器高度=屏幕高度（100vh），计算背景真实宽度=高度×比例
+                const bgWidth = window.innerHeight * imgRatio;
+                // 获取内容容器，设置宽度=背景宽度（-40是减去左右内边距20×2，避免超界）
+                const contentWrapper = document.querySelector('.content-wrapper');
+                contentWrapper.style.width = `${bgWidth - 40}px`; // 减去padding的20×2
+            };
+        }
+
+        // 页面加载完成后执行，且窗口大小变化时重新计算（响应式）
+        window.addEventListener('load', setContentWidth);
+        window.addEventListener('resize', setContentWidth);
+
+        // 音乐控制逻辑（不变）
+        const audio = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicText = document.getElementById('musicText');
+        audio.volume = 0.6;
+
+        window.addEventListener('load', function() {
+            audio.play().then(() => {
+                console.log("音乐自动播放成功");
+            }).catch(err => {
+                console.log("自动播放失败，点击页面任意位置播放：", err);
+                document.addEventListener('click', function playOnFirstClick() {
+                    audio.play();
+                    document.removeEventListener('click', playOnFirstClick);
+                }, { once: true });
+            });
+        });
+
+        musicIcon.addEventListener('click', () => audio.paused ? audio.play() : audio.pause());
+        musicText.addEventListener('click', () => audio.paused ? audio.play() : audio.pause());
+    </script>
+</body>
+</html>
