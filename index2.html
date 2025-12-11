@@ -14,35 +14,35 @@
         body {
             min-height: 100vh;
             position: relative;
-            overflow-x: hidden; /* 禁止横向滚动，避免内容超界 */
+            overflow-x: hidden; 
             padding: 30px 0;
         }
 
-        /* 背景：高度100%屏幕，保持原比例，水平居中 */
+       
         body::before {
             content: "";
             position: fixed;
             top: 0;
             height: 100vh;
-            margin: 0 auto; /* 水平居中 */
+            margin: 0 auto; 
             background-image: url("/To_Ting/backgroundpicture.png");
             background-repeat: no-repeat;
-            background-size: auto 100%; /* 高度填满屏幕，宽度按图片原比例自动计算 */
+            background-size: auto 100%; 
             background-position: center;
             z-index: -1;
             left: 0;
             right: 0;
         }
 
-        /* 内容容器：宽度=背景宽度，所有内容都在这里 */
+        
         .content-wrapper {
             position: relative;
-            margin: 0 auto; /* 与背景对齐居中 */
-            padding: 5px; /* 左右内边距，避免文字贴背景边缘 */
-            max-width: 100%; /* 禁止超宽 */
+            margin: 0 auto; 
+            padding: 5px; 
+            max-width: 100%; 
         }
 
-        /* 文本样式：宽度完全继承内容容器（不超背景） */
+       
         .text1 {
             margin-top: 10em;
             text-indent: 2em;
@@ -50,20 +50,20 @@
             line-height: 2.05;
             color: rgb(40, 70, 70);
             font-family: KaiTi;
-            font-size: 18px; /* 适当调整字体大小，避免拥挤 */
+            font-size: 18px; 
         }
 
-        /* 音乐控制区：固定在内容容器右上角，不超背景 */
+       
         .music-container {
             position: fixed;
-            position: absolute;  /* 仅容器固定定位 */
+            position: absolute;  
             top: 0;
-            right: 1px; /* 与内容容器内边距一致 */
-            text-align: center; /* 容器内元素水平居中 */
+            right: 1px; 
+            text-align: center; 
             z-index: 9999;
-            margin-right: 70px;
-            display: flex;          /* 开启flex布局 */
-            flex-direction: column; /* 图标和文字垂直排列（图标在上、文字在下） */
+            margin-right: 65px;
+            display: flex;         
+            flex-direction: column;
             align-items: center;
             }
 
@@ -74,8 +74,8 @@
             height: 40px;
             display: block;
             margin: 0 auto; 
-            margin-right: 1px; /* 图标自身水平居中 */
-            /* 移除 position: fixed，避免脱离文档流 */
+            margin-right: 1px; 
+            
             }
 
             .music-text {
@@ -85,8 +85,8 @@
             cursor: pointer;
             font-family: fangsong;
             white-space: nowrap;
-            margin-top: 40px; /* 调整图标与文字的垂直距离（覆盖重复的margin-top） */
-            margin-right: 15px; /* 防止文字换行超界 */
+            margin-top: 40px; 
+            margin-right: 15px; 
             }
 
         
@@ -95,12 +95,12 @@
     </style>
 </head>
 <body>
-    <!-- 内容容器：所有元素包裹在这里，宽度=背景宽度 -->
+    
     <div class="content-wrapper">
-        <!-- 播放提示 -->
+       
         
 
-        <!-- 文本内容（严格在背景内） -->
+       
         <div class="text1">
             <p>好久不见，慧婷，二十岁生日快乐呀！</p >
                 <br>
@@ -138,39 +138,39 @@
                 <br><br><br><br><br><br><br><br><br><br><br>
         </div>
 
-        <!-- 音乐控制区（在内容容器内，不超背景） -->
+        
         <div class="music-container" id="musicControlWrap">
             <img src="/To_Ting/20single.png" class="music-control" id="musicIcon" alt="音乐控制">
             <div class="music-text" id="musicText">Happy 20th Birthday</div>
         </div>
     </div>
 
-    <!-- 音频元素 -->
+    
     <audio id="bgMusic" src="/To_Ting/TheRain.mp3" loop preload></audio>
 
     <script>
-        // 核心：动态获取背景真实宽度，让内容容器匹配
+        
         function setContentWidth() {
-            // 创建一个隐藏的img元素，用于获取背景图片的原始比例
+            
             const bgImg = new Image();
-            bgImg.src = "/To_Ting/backgroundpicture.png"; // 与背景图片路径一致
+            bgImg.src = "/To_Ting/backgroundpicture.png"; 
 
             bgImg.onload = function() {
-                // 图片原始比例：宽/高
+                
                 const imgRatio = bgImg.width / bgImg.height;
-                // 背景容器高度=屏幕高度（100vh），计算背景真实宽度=高度×比例
+               
                 const bgWidth = window.innerHeight * imgRatio;
-                // 获取内容容器，设置宽度=背景宽度（-40是减去左右内边距20×2，避免超界）
+                
                 const contentWrapper = document.querySelector('.content-wrapper');
-                contentWrapper.style.width = `${bgWidth - 40}px`; // 减去padding的20×2
+                contentWrapper.style.width = `${bgWidth - 40}px`; 
             };
         }
 
-        // 页面加载完成后执行，且窗口大小变化时重新计算（响应式）
+        
         window.addEventListener('load', setContentWidth);
         window.addEventListener('resize', setContentWidth);
 
-        // 音乐控制逻辑（不变）
+        
         const audio = document.getElementById('bgMusic');
         const musicIcon = document.getElementById('musicIcon');
         const musicText = document.getElementById('musicText');
@@ -194,6 +194,7 @@
 </body>
 
 </html>
+
 
 
 
