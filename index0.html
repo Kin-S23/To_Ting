@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
-    <!-- 配置Tailwind自定义主题 -->
     <script>
         tailwind.config = {
             theme: {
@@ -41,12 +40,11 @@
             }
         }
         
-        /* 爱心浮动动画 - 修正坐标，确保在容器内完整显示 */
         @keyframes floatUp {
             0% {
                 transform: translateY(0) rotate(0deg);
                 opacity: 0;
-                bottom: 0; /* 从容器底部开始 */
+                bottom: 0; 
             }
             10% {
                 opacity: 1;
@@ -55,13 +53,13 @@
                 opacity: 1;
             }
             100% {
-                transform: translateY(-100vh) ; /* 上升到容器顶部以上 */
+                transform: translateY(-100vh) ; 
                 opacity: 0;
                 bottom: 100%;
             }
         }
         
-        /* 图片进入动画 */
+      
         @keyframes slideIn {
             from {
                 transform: translateX(-100%);
@@ -74,7 +72,7 @@
             }
         }
         
-        /* 弹窗进入动画 */
+      
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -88,32 +86,25 @@
     </style>
 </head>
 <body class="bg-white font-heiti text-black overflow-hidden flex justify-center items-start min-h-screen p-0 m-0">
-    <!-- 16:9比例的背景容器 - 所有内容都在这个容器内 -->
     <div id="background-container" class="relative overflow-hidden  " style="background-color: rgba(242, 217, 232, 0.7); ">
-        <!-- 爱心容器 - 专门用于承载爱心，确保层级正确 -->
         <div id="hearts-container" class="absolute inset-0 z-0"></div>
         
-        <!-- 灰线和图片区域 - 现在完全在背景容器内，层级在爱心上方 -->
         <div id="content-container" class="absolute top-0 left-0 w-full h-full flex flex-col items-center pointer-events-none z-10">
-            <!-- 灰线 -->
             <div class="absolute w-full h-4 bg-grayCustom" style="top: 68%;"></div>
             
-            <!-- 标题文字 -->
             <div class="absolute text-xl md:text-2xl font-bold" style="top: 25%;font-family:  fangsong;color: rgb(244, 79, 137);font-size: 30px;text-align: center;line-height: 2.05;"><p>A special day!</p><p>请选择慧婷的祝福:</p></div>
             
-            <!-- 图片容器 -->
             <div class="absolute flex justify-between w-[100%] h-48 md:h-49" style="top: calc(50% - 24px);">
-                <!-- 图片A -->
+               
                 <div class="w-1/3 flex justify-center image-enter" style="animation-delay: 0.2s;opacity: 0; ">
                     <img src="/To_Ting/a_huiting.png" alt="慧婷A" class="h-full object-contain cursor-pointer pointer-events-auto" id="img-a">
                 </div>
                 
-                <!-- 图片B -->
+              
                 <div class="w-1/3 flex justify-center image-enter" style="animation-delay: 0.8s;opacity: 0;">
                     <img src="/To_Ting/b_huiting.png" alt="慧婷B" class="h-full object-contain cursor-pointer pointer-events-auto" id="img-b">
                 </div>
                 
-                <!-- 图片C -->
                 <div class="w-1/3 flex justify-center image-enter" style="animation-delay: 1.5s;opacity: 0;">
                     <img src="/To_Ting/c_huiting.png" alt="慧婷C" class="h-full object-contain cursor-pointer pointer-events-auto" id="img-c">
                 </div>
@@ -121,7 +112,6 @@
         </div>
     </div>
     
-    <!-- 弹窗A -->
     <div id="modal-a" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
         <div class="bg-lightPink border-2 border-grayCustom rounded-lg p-6 w-11/12 max-w-md modal-enter">
             <p class="text-center mb-6" style="font-family:  kaiti, sans-serif;font-size: 19px;color: rgb(122, 79, 94)">新的一岁，愿慧婷岁岁常安，身康体健，万事顺意！</p>
@@ -130,8 +120,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- 弹窗B -->
     <div id="modal-b" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
         <div class="bg-lightPink border-2 border-grayCustom rounded-lg p-6 w-11/12 max-w-md modal-enter">
             <p class="text-center mb-6" style="font-family: kaiti, sans-serif;font-size: 19px;color: rgb(122, 79, 94)">桃李年华，愿慧婷笃行不怠，事业精进，未来可期！</p>
@@ -142,61 +130,48 @@
     </div>
 
     <script>
-        // 设置16:9比例的背景容器
         function setContainerDimensions() {
             const container = document.getElementById('background-container');
             const windowHeight = window.innerHeight;
-            const desiredWidth = windowHeight * (10.7/16); // 16:9比例
+            const desiredWidth = windowHeight * (10.7/16); 
             
-            // 容器高度等于屏幕高度，宽度按比例计算
             container.style.height = `${windowHeight}px`;
             container.style.width = `${desiredWidth}px`;
         }
         
-        // 初始化容器尺寸
         setContainerDimensions();
-        // 窗口大小改变时重新计算
         window.addEventListener('resize', setContainerDimensions);
         
-        // 创建爱心并添加动画 - 修复爱心不显示的问题
         function createHearts() {
             const heartsContainer = document.getElementById('hearts-container');
             const container = document.getElementById('background-container');
             
-            // 确保容器尺寸已正确设置
             if (!container.offsetWidth || !container.offsetHeight) {
                 setTimeout(createHearts, 100);
                 return;
             }
-            
-            // 持续创建爱心（每200ms一个，更密集）
+
             const createHeart = () => {
                 const heart = document.createElement('img');
                 heart.src = '/To_Ting/heart.png';
                 heart.alt = '爱心';
                 
-                // 随机大小（15-40px，比之前稍大，更明显）
                 const size = Math.random() * 25 + 15;
-                // 随机X位置（确保在容器内）
                 const left = Math.random() * (container.offsetWidth - size);
                 
-                // 设置爱心样式 - 确保在容器底部开始
                 heart.style.position = 'absolute';
                 heart.style.width = `${size}px`;
                 heart.style.height = 'auto';
                 heart.style.left = `${left}px`;
-                heart.style.bottom = '0px'; // 从容器底部开始
-                heart.style.zIndex = '0'; // 确保在内容下方
+                heart.style.bottom = '0px'; 
+                heart.style.zIndex = '0'; 
                 heart.classList.add('heart-animation');
                 
-                // 随机动画时长（4-8秒，速度更均匀）
                 const duration = Math.random() * 4+6;
                 heart.style.animationDuration = `${duration}s`;
                 
-                // 添加到爱心容器
                 heartsContainer.appendChild(heart);
                 
-                // 动画结束后移除元素，避免内存占用
                 setTimeout(() => {
                     if (heart.parentNode === heartsContainer) {
                         heartsContainer.removeChild(heart);
@@ -204,14 +179,12 @@
                 }, duration * 1000);
             };
             
-            // 初始创建一批爱心（5个），然后定时创建
             for (let i = 0; i < 5; i++) {
                 setTimeout(createHeart, i * 100);
             }
             setInterval(createHeart, 200);
         }
         
-        // 图片点击事件
         document.getElementById('img-a').addEventListener('click', () => {
             document.getElementById('modal-a').classList.remove('hidden');
         });
@@ -224,16 +197,15 @@
             window.location.href = '/To_Ting/index1.html';
         });
         
-        // 关闭弹窗事件
         document.querySelectorAll('.modal-ok').forEach(button => {
             button.addEventListener('click', function() {
                 this.closest('[id^="modal-"]').classList.add('hidden');
             });
         });
         
-        // 页面加载完成后开始创建爱心
         window.addEventListener('load', createHearts);
     </script>
 </body>
 
 </html>
+
