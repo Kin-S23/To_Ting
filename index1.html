@@ -13,7 +13,7 @@
             box-sizing: border-box;
         }
          body {
-            min-height: 0vh; /* 让页面可滚动 */
+            min-height: 0vh;
             position: relative;
             padding: 2px ;
         }
@@ -21,20 +21,19 @@
     
         body::before {
             content: "";
-            position: fixed; /* 滑动时背景不动 */
+            position: fixed; 
             top: 0;
             left: 0;
             right: 0;
-            height: 100vh; /* 高度与屏幕一致 */
-            margin: 0 auto; /* 水平居中，左右留空 */
+            height: 100vh; 
+            margin: 0 auto; 
             
-            /* 关键：按图片原比例缩放，高度填满屏幕，宽度自适应 */
             background-image: url("/To_Ting/backgroundpicture.png");
             background-repeat: no-repeat;
-            background-size: auto 100%; /* 宽度自动，高度100%（保持原比例） */
-            background-position: center; /* 图片居中显示 */
+            background-size: auto 100%;
+            background-position: center; 
             
-            z-index: -1; /* 背景在内容下方 */
+            z-index: -1; 
         }
         .text0{
             color: rgb(242, 132, 187);
@@ -42,20 +41,19 @@
             text-align: center;
             font-family:"STXingkai";
             margin-top: 2.5em;
-            /* 新增动画相关属性 */
-            position: relative; /* 为位移动画提供基准 */
-            animation: flyUp 3s ease-out forwards; /* 动画名、时长、缓动、停在结束状态 */
+           
+            position: relative; 
+            animation: flyUp 3s ease-out forwards;
             }
 
-            /* 定义动画关键帧：从底部（比如下方200px）移到原位 */
             @keyframes flyUp {
             0% {
-                transform: translateY(600px); /* 初始位置：底部（可调整数值） */
-                opacity: 0; /* 初始透明，增强过渡感 */
+                transform: translateY(600px); 
+                opacity: 0; 
             }
             100% {
-                transform: translateY(0); /* 最终位置：当前位置 */
-                opacity: 1; /* 完全显示 */
+                transform: translateY(0);
+                opacity: 1;
             }
             }
        
@@ -74,12 +72,10 @@
         #fenye{
             margin-top: 50px;
             text-align: center;
-            /* 新增动画属性 */
             position: relative;
-            animation: flyUp 3s ease-out forwards; /* 与文本动画保持同步 */
-            /* 可选：如果想让分页比文本稍晚出现，可加延迟 */
-            animation-delay: 0.3s; /* 比文本晚0.3秒开始动画 */
-            opacity: 0; /* 初始透明（配合动画） */
+            animation: flyUp 3s ease-out forwards; 
+            animation-delay: 0.3s; 
+            opacity: 0; 
         }
 
         a{
@@ -94,14 +90,13 @@
             color: rgb(246, 209, 244);
         }
 
-        /* 复用之前定义的飞行动画（如果已在文本样式中定义过，这里无需重复） */
         @keyframes flyUp {
             0% {
-                transform: translateY(200px); /* 从下方200px开始 */
+                transform: translateY(200px); 
                 opacity: 0;
             }
             100% {
-                transform: translateY(0); /* 到当前位置 */
+                transform: translateY(0); 
                 opacity: 1;
             }
         }
@@ -118,3 +113,4 @@
    
 
  </html>
+
